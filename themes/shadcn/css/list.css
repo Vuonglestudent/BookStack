@@ -1,0 +1,48 @@
+/* List item styles for Shadcn UI theme */
+
+/* List item hover effects */
+.entity-list-item:not(.no-hover):hover, 
+.icon-list-item:not(.no-hover):hover {
+  background-color: var(--color-background-light, rgba(0, 0, 0, 0.06));
+  text-decoration: none;
+  border-radius: var(--border-radius, 0.5rem);
+  transition: background-color 0.2s ease, border-radius 0.2s ease;
+}
+
+/* All list items */
+.entity-list-item,
+.icon-list-item {
+  margin: 2px 0;
+  padding: 0.5rem 0.75rem;
+  transition: background-color 0.2s ease;
+}
+
+/* Links in lists */
+.entity-list-item a,
+.icon-list-item a {
+  text-decoration: none;
+  color: var(--color-text, inherit);
+}
+
+/* Chapter expansion override */
+.entity-list-item + .chapter-expansion {
+  display: flex;
+  padding: 0 12px 16px 12px;
+  align-items: center;
+  border: 0;
+  width: 100%;
+  position: relative;
+}
+
+/* Chapter contents toggle button */
+.entity-list-item + .chapter-expansion .chapter-contents-toggle {
+  border-radius: var(--border-radius, 0.5rem);
+  padding: 6px 19px;
+  width: 100%;
+  text-align: start;
+  transition: background-color 0.2s ease;
+}
+
+.entity-list-item + .chapter-expansion .chapter-contents-toggle:hover {
+  background-color: var(--color-background-light, rgba(0, 0, 0, 0.06));
+} 
