@@ -1,0 +1,120 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+📘 BookStack Visual Theme - Shadcn UI Style Customization Rule
+🎯 Mục tiêu
+Tuỳ biến giao diện BookStack theo phong cách UI hiện đại (Shadcn/Tailwind-like).
+
+Không chỉnh sửa vào code gốc (core) của BookStack.
+
+Sử dụng Visual Theme System để dễ cập nhật.
+
+Tối ưu khả năng bảo trì bằng cách tổ chức CSS rõ ràng theo thành phần.
+
+Sử dụng màu sắc hệ thống của BookStack thay vì hard-code
+
+📁 1. Cấu trúc thư mục theme
+Tạo tại đường dẫn resources/themes/shadcn/:
+
+resources/themes/shadcn/
+├── css/
+│   ├── index.css           # File trung tâm, import các file nhỏ
+│   ├── base.css            # Reset CSS, font, màu mặc định
+│   ├── button.css          # Giao diện nút
+│   ├── input.css           # Giao diện form input
+│   ├── card.css            # Giao diện card
+│   ├── layout.css          # Giao diện header, sidebar, footer
+│   └── modal.css           # Giao diện popup
+├── views/
+│   └── layout/
+│       └── app.blade.php   # Override layout chính để chèn CSS
+⚙️ 2. Cấu hình .env
+Mở file .env tại gốc project và thêm:
+
+BOOKSTACK_THEME=shadcn
+Nếu đã có dòng BOOKSTACK_THEME, chỉ cần sửa giá trị.
+
+Sau đó chạy:
+
+php artisan config:clear
+🧩 3. Tạo layout app.blade.php
+File ghi đè phần <head> của layout chính để nhúng CSS:
+
+{{-- resources/themes/shadcn/views/layout/app.blade.php --}}
+@extends('layouts.app')
+
+@section('head')
+    @parent
+    <link rel="stylesheet" href="{{ theme_path('/css/index.css') }}">
+@endsection
+🎨 4. Quy tắc viết CSS
+Tất cả class nên có prefix như .shadcn-* hoặc .btn-*, .card-*
+
+Viết rõ ràng, tránh ảnh hưởng global.
+
+Tách từng file riêng biệt theo thành phần giao diện.
+
+Mọi thay đổi phải được import qua index.css.
+
+📌 Ví dụ button.css
+
+/* button.css */
+.btn-primary {
+  background-color: #000;
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #222;
+}
+📌 Ví dụ index.css
+
+@import url('./base.css');
+@import url('./layout.css');
+@import url('./button.css');
+@import url('./input.css');
+@import url('./card.css');
+@import url('./modal.css');
+🛠️ 5. Ghi đè Blade nếu cần
+Khi muốn chỉnh layout cụ thể:
+
+Tìm file gốc trong resources/views/... của BookStack
+
+Copy vào resources/themes/shadcn/views/... theo đúng đường dẫn
+
+Thêm class mới từ bộ CSS bạn đã viết
+
+7. Rule về màu sắc (Color System)
+✅ Mục tiêu:
+Không được hard-code màu như #000, #fff, red,...
+
+Luôn sử dụng biến màu hoặc class gốc từ hệ thống BookStack.
+
+🔧 Cách dùng đúng:
+/* Sử dụng biến có sẵn */
+background-color: var(--color-primary);
+
+/* Hoặc sử dụng class */
+class="bg-primary text-white"
+📋 Một số biến màu có thể dùng:
+Biến	Ý nghĩa
+--color-primary	Màu chính của hệ thống
+--color-on-primary	Màu chữ trên nền chính
+--color-background	Màu nền chung
+--color-card	Màu nền của card
+--color-border	Màu đường viền
+--color-muted	Màu chữ mờ/phụ
+--color-header	Màu nền header
+
+📌 Nếu cần fallback:
+
+css
+Sao chép
+Chỉnh sửa
+
+background-color: var(--color-primary, #2e69ff);
