@@ -1,9 +1,21 @@
-/* Main CSS file for Shadcn UI theme */
+/* 
+ * Main CSS file for Shadcn UI theme 
+ * ---------------------------------
+ * Imports all component files and provides 
+ * organization for theme overrides 
+ */
+
+/* ===== COMPONENT IMPORTS ===== */
+/* region: component-imports */
 @import url('./base.css');
 @import url('./button.css');
 @import url('./card.css');
 @import url('./list.css');
 @import url('./nested-chapters.css');
+@import url('./header.css');
+@import url('./form.css');
+/* endregion: component-imports */
+
 /* Additional component imports will go here as they are created */
 /* 
 @import url('./input.css');

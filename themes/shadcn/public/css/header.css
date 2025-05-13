@@ -1,0 +1,19 @@
+/* Header styles for Shadcn UI theme */
+
+/* ===== HEADER NAVIGATION ===== */
+/* region: header-navigation */
+header .links a {
+  border-radius: var(--border-radius, 0.5rem);
+}
+
+/* User menu button override */
+header .user-name {
+  border-radius: var(--border-radius, 0.5rem);
+}
+
+header .logo {
+  border-radius: var(--border-radius, 0.5rem);
+}
+
+/* Add more header-related styles here */
+/* endregion: header-navigation */ 
