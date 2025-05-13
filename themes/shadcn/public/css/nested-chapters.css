@@ -1,0 +1,27 @@
+/* Styling cho chapter lồng nhau */
+.sub-chapter-list {
+    margin-left: 1.5rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--color-chapter, #af4d0d);
+}
+
+.sub-chapter-list-items {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.sub-chapter-list .list-item-chapter {
+    margin: 0.5rem 0;
+}
+
+/* Styling cho chapter hiện tại */
+.list-item-chapter.selected {
+    font-weight: bold;
+}
+
+/* Animation khi mở/đóng chapter */
+.sub-chapter-list {
+    transition: max-height 0.3s ease;
+    overflow: hidden;
+}

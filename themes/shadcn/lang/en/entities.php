@@ -65,4 +65,12 @@ return [
     'convert_book_desc' => 'You can convert this chapter to a new space with the same contents. Any permissions set on this chapter will be copied to the new space but any inherited permissions, from the parent space, will not be copied which could lead to a change of access control.',
     'recently_created_books' => 'Recently Created Spaces',
     'books_empty_or_search' => 'No spaces found in this shelf or matching your search.',
+
+    //Chapter new structure sub-chapters
+    'chapter_parent' => 'Parent Folder',
+    'chapters_new_sub' => 'New Sub-Folder',
+    'chapters_sub_shown' => 'Child Folders Shown',
+    'chapters_sub_hidden' => 'Child Folders Hidden',
+    'chapters_select_parent' => 'Select Parent Folder',
+    'chapters_no_parent' => 'No Parent (Root Folder)',
 ];
