@@ -5,6 +5,7 @@ namespace Themes\Shadcn\App\Entities\Models;
 use BookStack\Entities\Models\Chapter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Collection;
 
 class ChapterRelations
 {
@@ -57,5 +58,26 @@ class ChapterRelations
     public static function queryRootChapters($bookQuery)
     {
         return $bookQuery->whereNull('parent_id');
+    }
+
+    /**
+     * Get the sub-chapters that belong to this chapter.
+     */
+    public static function getSubChapters(Chapter $chapter, string $dir = 'ASC')
+    {
+        return Chapter::where('parent_id', '=', $chapter->id)
+            ->orderBy('priority', $dir)
+            ->get();
+    }
+
+    /**
+     * Get visible sub-chapters for a chapter
+     */
+    public static function getVisibleSubChapters(Chapter $chapter): Collection
+    {
+        return Chapter::where('parent_id', '=', $chapter->id)
+            ->scopes('visible')
+            ->orderBy('priority', 'asc')
+            ->get();
     }
 }

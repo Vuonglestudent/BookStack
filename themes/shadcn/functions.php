@@ -10,6 +10,7 @@ use BookStack\Facades\Theme;
 use BookStack\Theming\ThemeEvents;
 use Themes\Shadcn\App\ThemeServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Themes\Shadcn\App\Entities\Controllers\ChapterControllerExtension;
 
 // Require các class cần thiết
@@ -18,12 +19,28 @@ require_once __DIR__ . '/app/Console/Commands/MigrateTheme.php';
 require_once __DIR__ . '/app/Entities/Models/ChapterRelations.php';
 require_once __DIR__ . '/app/Entities/Controllers/ChapterControllerExtension.php';
 require_once __DIR__ . '/app/Entities/Tools/BookContentsExtension.php';
+require_once __DIR__ . '/app/Entities/Services/ChapterSubService.php';
+require_once __DIR__ . '/app/Entities/Services/BookContentService.php';
 
 // Đăng ký ThemeServiceProvider khi app boot
 Theme::listen(ThemeEvents::APP_BOOT, function($app) {
     $provider = new Themes\Shadcn\App\ThemeServiceProvider($app);
     $provider->register();
     $provider->boot();
+});
+
+// Thêm custom JS scripts
+Theme::listen(ThemeEvents::WEB_MIDDLEWARE_BEFORE, function ($request) {
+    // Register a callback to be executed after the view is rendered
+    View::composer('*', function ($view) {
+        if (isset($view->cspNonce)) {
+            $view->with('shadcn_scripts', [
+                'index' => url('/theme/shadcn/js/index.js')
+            ]);
+        }
+    });
+    
+    return null;
 });
 
 // Register theme custom routes theo cách đơn giản

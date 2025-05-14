@@ -7,7 +7,7 @@
         </span>
         <div class="content">
             <h4 class="entity-list-item-name break-text">
-                <span class="entity-name-text">{{ $entity->preview_name ?? $entity->name }}</span>
+                <span class="entity-name-text">@icon($type) {{ $entity->preview_name ?? $entity->name }}</span>
             </h4>
             {{ $slot ?? '' }}
         </div>
