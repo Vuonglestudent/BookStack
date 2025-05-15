@@ -16,6 +16,8 @@
   margin: 2px 0;
   padding: 0.5rem 0.75rem;
   transition: background-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Links in lists */
@@ -23,6 +25,54 @@
 .icon-list-item a {
   text-decoration: none;
   color: var(--color-text, inherit);
+}
+
+/* ===== ENTITY LIST LAYOUT ===== */
+/* Entity list width fix */
+.entity-list {
+  width: 100%;
+}
+
+/* Chapter title layout */
+.entity-list-item-name {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100%;
+}
+
+.entity-list-item-name .entity-name-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* List items styling in chapter contents */
+.chapter-contents-list .list-item-chapter > a,
+.chapter-contents-list .list-item-page > a {
+  padding-left: var(--indent-step, 8px);
+  box-sizing: border-box;
+}
+
+/* Root chapter links */
+#book-tree > ul > li > a {
+  padding-left: 0;
+  width: 100%;
+}
+
+/* Consistent item spacing and sizing */
+.chapter-contents-list li {
+  margin-bottom: 2px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Consistent heights for items */
+.list-item-chapter,
+.list-item-page {
+  min-height: 28px;
+  display: block;
+  position: relative;
 }
 
 /* ===== CHAPTER EXPANSIONS OVERRIDES ===== */

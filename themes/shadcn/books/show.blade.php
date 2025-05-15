@@ -37,7 +37,7 @@
                                     continue;
                                 }
                             @endphp
-                            @include('chapters.parts.list-item', ['chapter' => $childElement])
+                            @include('chapters.parts.list-item', ['chapter' => $childElement, 'isShowChildren' => false])
                         @else
                             @include('pages.parts.list-item', ['page' => $childElement])
                         @endif

@@ -1,4 +1,69 @@
 /* Styling cho chapter lồng nhau */
+:root {
+    --indent-base: 8px;
+    --indent-step: 8px;
+}
+
+/* Indentation system and structure */
+.chapter-child-menu {
+    padding-left: var(--indent, var(--indent-step));
+    margin-inline-start: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Animation styling */
+.chapter-contents-list {
+    margin-top: 0;
+    overflow: hidden;
+    max-height: 2000px; /* Allow sufficient height for animation */
+    width: 100%;
+    transition: max-height 0.3s ease;
+}
+
+/* Chapter toggle button styling */
+.chapter-toggle-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 0 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    height: 24px;
+    width: 24px;
+    flex-shrink: 0;
+    pointer-events: auto;
+}
+
+.chapter-toggle-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.chapter-toggle-btn.open svg {
+    transform: rotate(90deg);
+}
+
+.chapter-toggle-btn:hover {
+    opacity: 0.8;
+}
+
+.chapter-toggle-btn:focus {
+    outline: none;
+}
+
+/* Root chapter styling */
+.list-item-chapter.chapter {
+    position: relative;
+}
+
+.list-item-chapter.chapter > a {
+    font-weight: 500;
+}
+
+/* Sub-chapter list styling */
 .sub-chapter-list {
     margin-left: 1.5rem;
     padding-left: 0.5rem;
@@ -15,7 +80,7 @@
     margin: 0.5rem 0;
 }
 
-/* Styling cho chapter hiện tại */
+/* Chapter selection styling */
 .list-item-chapter.selected {
     font-weight: bold;
 }

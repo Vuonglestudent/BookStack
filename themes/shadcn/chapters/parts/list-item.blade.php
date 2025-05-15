@@ -1,9 +1,13 @@
 {{--This view display child pages in a list if pre-loaded onto a 'visible_pages' property,--}}
 {{--To ensure that the pages have been loaded efficiently with permissions taken into account.--}}
 @php
-    // Đảm bảo visible_sub_chapters luôn tồn tại
+    // Đảm bảo visible_sub_chapters và visible_pages luôn tồn tại
     if (!isset($chapter->visible_sub_chapters)) {
         $chapter->visible_sub_chapters = collect([]);
+    }
+    
+    if (!isset($chapter->visible_pages)) {
+        $chapter->visible_pages = collect([]);
     }
 @endphp
 
@@ -17,7 +21,7 @@
     </div>
 </a>
 
-@if ($chapter->visible_pages->count() > 0 || $chapter->visible_sub_chapters->count() > 0)
+@if (($chapter->visible_pages->count() > 0 || $chapter->visible_sub_chapters->count() > 0) && $isShowChildren)
     <div class="chapter chapter-expansion">
         <span class="icon text-chapter">@icon('chapter')</span>
         <div class="content">

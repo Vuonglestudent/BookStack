@@ -14,10 +14,34 @@
             {!! $chapter->descriptionHtml() !!}
         </div>
 
-        @if(count($pages) > 0)
-            <div class="entity-list book-contents" dir="auto">
-                @foreach($pages as $page)
-                    @include('pages.parts.list-item', ['page' => $page])
+        @php
+            // Get visible sub-chapters using the helper function
+            $subChapters = \Themes\Shadcn\App\Entities\Models\ChapterRelations::getVisibleSubChapters($chapter);
+            
+            // Make sure each subchapter has its visible_pages and visible_sub_chapters initialized
+            foreach($subChapters as $subChapter) {
+                if (!isset($subChapter->visible_pages)) {
+                    $subChapter->visible_pages = $subChapter->getVisiblePages();
+                }
+                
+                if (!isset($subChapter->visible_sub_chapters)) {
+                    $subChapter->visible_sub_chapters = \Themes\Shadcn\App\Entities\Models\ChapterRelations::getVisibleSubChapters($subChapter);
+                }
+            }
+            
+            $hasChildren = $subChapters->count() > 0 || count($pages) > 0;
+        @endphp
+
+        @if($hasChildren)
+            <div class="entity-list book-contents">
+                {{-- Display sub-chapters --}}
+                @foreach($subChapters as $childElement)
+                    @include('chapters.parts.list-item', ['chapter' => $childElement, 'isShowChildren' => false])
+                @endforeach
+
+                {{-- Display pages --}}
+                @foreach($pages as $childElement)
+                    @include('pages.parts.list-item', ['page' => $childElement])
                 @endforeach
             </div>
         @else
@@ -39,7 +63,6 @@
                         </a>
                     @endif
                 </div>
-
             </div>
         @endif
 

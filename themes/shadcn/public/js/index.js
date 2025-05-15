@@ -76,6 +76,66 @@ function slideDown(element, animTime = 400) {
     animateStyles(element, animStyles, animTime);
 }
 
+// Chapter Toggle Button Handler
+function initChapterToggles() {
+    console.log('Initializing chapter toggle buttons');
+    
+    // Find all chapter toggle buttons in the title row
+    const toggleButtons = document.querySelectorAll('.chapter-toggle-btn');
+    console.log(`Found ${toggleButtons.length} toggle buttons`);
+    
+    toggleButtons.forEach(button => {
+        // Get section ID from button data attribute
+        const sectionId = button.getAttribute('data-section-id');
+        if (!sectionId) return;
+        
+        // Display debug info
+        const debugId = button.getAttribute('data-debug-id');
+        const context = button.getAttribute('data-context');
+        console.log(`Setup toggle for chapter ${debugId} (${context || 'unknown'}), section ID: ${sectionId}`);
+        
+        // Find corresponding content list - search in document rather than a specific component
+        const contentList = document.querySelector(`[data-list="chapter-contents"][data-section-id="${sectionId}"]`);
+        if (!contentList) {
+            console.warn(`No matching content list found for section ID: ${sectionId}`);
+            return;
+        }
+        
+        // Set initial state
+        const isOpen = button.classList.contains('open');
+        console.log(`Initial state for ${debugId}: ${isOpen ? 'open' : 'closed'}`);
+        if (!isOpen) {
+            contentList.style.display = 'none';
+        }
+        
+        // Remove existing click handlers to avoid duplicates
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add click handler to the new button
+        newButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            console.log(`Click on toggle ${debugId} (${context || 'unknown'})`);
+            
+            // Toggle button state
+            newButton.classList.toggle('open');
+            const nowOpen = newButton.classList.contains('open');
+            newButton.setAttribute('aria-expanded', nowOpen ? 'true' : 'false');
+            
+            // Toggle content visibility with animation
+            if (nowOpen) {
+                console.log(`Opening content for ${debugId}`);
+                slideDown(contentList, 180);
+            } else {
+                console.log(`Closing content for ${debugId}`);
+                slideUp(contentList, 180);
+            }
+        });
+    });
+}
+
 // Định nghĩa class ChapterContentsExtended trực tiếp ở đây
 class ChapterContentsExtended {
     constructor(element) {
@@ -183,7 +243,13 @@ document.addEventListener('DOMContentLoaded', () => {
     console.clear(); // Xóa console trước để dễ theo dõi
     console.log('Initializing BookStack Theme JS...');
     
-    // Khởi tạo component của chúng ta
+    // Initialize chapter toggle buttons in the title row
+    initChapterToggles();
+    
+    // Ensure selected items are visible
+    revealSelectedItems();
+    
+    // For backward compatibility, still initialize the old chapter content toggles
     const chapterContentsElements = document.querySelectorAll('[data-component="chapter-contents"]');
     console.log(`Found ${chapterContentsElements.length} chapter content components`);
     
@@ -194,4 +260,56 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('BookStack Theme: Chapter contents extensions initialized');
 });
+
+/**
+ * Make sure selected items are visible by expanding their parent containers
+ */
+function revealSelectedItems() {
+    // Find selected items (they have 'selected' class)
+    const selectedItems = document.querySelectorAll('.selected, .selected-chapter, .selected-page');
+    
+    if (selectedItems.length === 0) {
+        return;
+    }
+    
+    console.log(`Found ${selectedItems.length} selected items to reveal`);
+    
+    selectedItems.forEach(item => {
+        let listItem = item;
+        
+        // If this is an <a> tag, get its parent li
+        if (item.tagName.toLowerCase() === 'a') {
+            listItem = item.closest('li');
+        }
+        
+        // Now find all parent content lists that need to be revealed
+        let parent = listItem.parentElement;
+        
+        while (parent) {
+            // If this is a content list that should be shown
+            if (parent.classList.contains('chapter-contents-list') || 
+                parent.matches('[data-list="chapter-contents"]')) {
+                
+                // Make it visible
+                if (parent.style.display !== 'block') {
+                    parent.style.display = 'block';
+                    parent.classList.add('open');
+                    
+                    // Find the toggle button for this list and update it
+                    const sectionId = parent.getAttribute('data-section-id');
+                    if (sectionId) {
+                        const toggleButton = document.querySelector(`[data-toggle="chapter-contents"][data-section-id="${sectionId}"]`);
+                        if (toggleButton) {
+                            toggleButton.classList.add('open');
+                            toggleButton.setAttribute('aria-expanded', 'true');
+                        }
+                    }
+                }
+            }
+            
+            // Move up to the next potential parent
+            parent = parent.parentElement;
+        }
+    });
+}
  
