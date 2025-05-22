@@ -1,0 +1,4 @@
+.tri-layout-left-contents>*,
+.tri-layout-right-contents>* {
+    opacity: 1 !important;
+}
